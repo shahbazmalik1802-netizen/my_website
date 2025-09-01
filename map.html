@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live GPS Map with Profile Picture & Search</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    #map {
+      height: calc(100vh - 100px);
+      width: 90%;
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      border: 3px solid #0a5081;
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: all 1s ease-in-out;
+    }
+
+    #map.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .custom-icon {
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 0 6px rgba(0,0,0,0.5);
+    }
+
+    .controls {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .controls button {
+      padding: 8px 15px;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
+      background: #007bff;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background: #0056b3;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div class="controls">
+    <button onclick="triggerPhotoUpload()">📷 Change Picture</button>
+    <button onclick="logout()">🚪 Logout</button>
+    <input type="file" id="photoInput" accept="image/*" onchange="updatePhoto(event)">
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Geocoder Plugin -->
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  
+  <script>
+    let map, userMarker, userIcon, userData;
+
+    window.onload = function () {
+      if (localStorage.getItem("loggedIn") !== "true") {
+        window.location.href = "login.html"; 
+        return;
+      }
+
+      // ✅ Get user data
+      userData = JSON.parse(localStorage.getItem("user"));
+      const userPhoto = userData && userData.photo ? userData.photo : "https://via.placeholder.com/50";
+
+      // Initialize Map
+      map = L.map('map').setView([0, 0], 2);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+
+      document.getElementById("map").classList.add("show");
+
+      // ✅ Add Search Control
+      L.Control.geocoder({ defaultMarkGeocode: true }).addTo(map);
+
+      // Custom icon with photo
+      userIcon = L.icon({
+        iconUrl: userPhoto,
+        iconSize: [50, 50],
+        className: "custom-icon"
+      });
+
+      // Watch live location
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(
+          function (position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+            if (userMarker) {
+              userMarker.setLatLng([lat, lon]);
+            } else {
+              userMarker = L.marker([lat, lon], { icon: userIcon }).addTo(map)
+                .bindPopup("📍 Live Location of " + userData.fname).openPopup();
+              map.setView([lat, lon], 15);
+            }
+          },
+          function (error) {
+            console.error("Geolocation error: " + error.message);
+          },
+          { enableHighAccuracy: true, maximumAge: 0 }
+        );
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    };
+
+    // 📷 Trigger file input
+    function triggerPhotoUpload() {
+      document.getElementById("photoInput").click();
+    }
+
+    // 📷 Update profile photo
+    function updatePhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const newPhoto = e.target.result;
+
+        // Save new photo in localStorage
+        userData.photo = newPhoto;
+        localStorage.setItem("user", JSON.stringify(userData));
+
+        // Update marker icon
+        userIcon = L.icon({
+          iconUrl: newPhoto,
+          iconSize: [50, 50],
+          className: "custom-icon"
+        });
+
+        if (userMarker) {
+          userMarker.setIcon(userIcon);
+        }
+        alert("✅ Profile picture updated!");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // 🚪 Logout
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

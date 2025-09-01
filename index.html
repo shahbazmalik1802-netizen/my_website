@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Online Services | MyOnlineLocation.com</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Baloo+Bhai|Bree+Serif&display=swap">
+</head>
+
+<body>
+
+    <nav id="navbar">
+        <div id="logo">
+
+            <img src="logo.png" alt="MyOnlineLocation.com Logo">
+        </div>
+        <ul class="nav-left">
+
+            <li class="item"><a href="#Home">Home</a></li>
+            <li class="item"><a href="#services">Services</a></li>
+            <li class="item"><a href="#client-section">About Us</a></li>
+            <li class="item"><a href="#Contact ">Contact Us</a></li>
+            <li><a href="map.html">GPS Map</a></li>
+        </ul>
+        <ul class="nav-right">
+            <li><a href="login.html">Login</a></li>
+
+        </ul>
+    </nav>
+    <Section id="Home">
+        <h1 class="h-primary">Welcome To GPS Map Location</h1>
+        <p>Our live GPS map feature helps you find your exact location on the globe in real time.Using your device’s
+            built-in GPS, the map automatically updates to show where you are with a pinpoint marker. Whether you are
+            exploring a new city, checking directions,or simply curious about your current position, this tool makes
+            navigation simple and accurate.
+            The map is interactive, zoomable, and works seamlessly across both desktop and mobile devices.</p>
+        <button class="btn"> Order Now</button>
+
+
+
+    </Section>
+    <section class="services-container">
+        <h1 class="h-primary center"> Our Services</h1>
+        <div id="services">
+            <div class="box">
+                <img src="img.services.jpg" alt="">
+                <h2 class="h-secondary center">🌍 Live Location Tracking</h2>
+                <p class="center">Track your exact position on the map in real time with pinpoint accuracy. Our system
+                    updates instantly as you move, ensuring you always know where you are.Perfect for travel, safety,
+                    and daily navigation needs.</p>
+
+            </div>
+            <div class="box">
+                <img src="img.services.jpg" alt="">
+                <h2 class="h-secondary center">🚗 Navigation & Directions</h2>
+                <p class="center">Our GPS system provides step-by-step navigation with accurate routes for driving,
+                    walking, or cycling.Users can easily find the fastest paths to their destinations. Real-time
+                    updates ensure smooth and reliable travel.</p>
+
+            </div>
+            <div class="box">
+                <img src="img.services.jpg" alt="">
+                <h2 class="h-secondary center">📍 Nearby Places Search</h2>
+                <p class="center">Quickly discover nearby restaurants, hotels, hospitals, ATMs, and more with our smart
+                    search feature. The map highlights essential services around your location. This makes exploring new
+                    areas simple and convenient.</p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+    <section id="client-section">
+        <h1 class="h-primary center">Our Clients</h1>
+        <div id="clients">
+            <div class="client-item">
+                <img src="logo.2.png" alt="Our Client">
+            </div>
+            <div class="client-item">
+                <img src="logo.3.png" alt="Our Client">
+            </div>
+            <div class="client-item">
+                <img src="logo.4.png" alt="Our Client">
+            </div>
+            <div class="client-item">
+                <img src="logo.5.png" alt="Our Client">
+            </div>
+        </div>
+
+
+    </section>
+
+    <section id="Contact">
+        <h1 class="h-primary center">Contact us</h1>
+        <div id="contact-box">
+            <form action="">
+                <div class="form-group">
+                    <label for="name">Name: </label>
+                    <input type="text" name="name" id="name" placeholder="Enter your name">
+
+                </div>
+                <div class="form-group">
+                    <label for="name">Email: </label>
+                    <input type="Email" name="name" id="name" placeholder="Enter your Email">
+
+                </div>
+                <div class="form-group">
+                    <label for="name">Phone Number: </label>
+                    <input type="Phone" name="name" id="name" placeholder="Enter your Phone">
+
+                </div>
+                <div class="form-group">
+                    <label for="name">Message: </label>
+                    <textarea name="Message" id="Message" cols="30" rows="10"></textarea>
+
+                </div>
+            </form>
+        </div>
+
+    </section>
+
+    <footer>
+        <div class="center">
+            copyright &copy; www.MyOnlineLocation.com. All reserved!
+        </div>
+    </footer>
+
+    <script>
+        if (localStorage.getItem("loggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+
+
+</body>
+
+</html>
